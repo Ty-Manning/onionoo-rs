@@ -6,7 +6,10 @@ keywords = ["api-wrapper", "tor", "metrics", "observability"]
 categories = ["api-bindings"]
 version = "0.1.0"
 edition = "2024"
-
+exclude = [
+    "examples/*",
+    "tests/*",
+]
 [dependencies]
 reqwest = { version = "0.12", features = ["json"] }
 serde = { version = "1.0", features = ["derive"] }
