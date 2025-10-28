@@ -119,14 +119,14 @@ impl Client {
     /// # Examples
     ///
     /// ```no_run
-    /// use onionoo::{Client, QueryParameters, selection::TypeValue};
+    /// use onionoo::{Client, QueryParameters, selection::TypeValue, models::SummaryResponse};
     /// # async fn example() -> Result<(), Box<dyn std::error::Error>> {
     /// let client = Client::new();
     /// let params = QueryParameters::new()
     ///     .type_param(TypeValue::Relay)
     ///     .limit(10);
-    ///     
-    /// let response = client.get("/summary", params).await?;
+    ///
+    /// let response: SummaryResponse = client.get("/summary", params).await?;
     /// println!("Found {} relays", response.relays.len());
     /// # Ok(())
     /// # }
@@ -144,16 +144,13 @@ impl Client {
         };
 
         let mut url = format!("{}{}", self.base_url, endpoint);
-        
+
         let query_string = params.to_query_string();
         if !query_string.is_empty() {
             url.push_str(&query_string);
         }
 
-        let response = self.http_client
-            .get(&url)
-            .send()
-            .await?;
+        let response = self.http_client.get(&url).send().await?;
 
         if !response.status().is_success() {
             let status_code = response.status().as_u16();
@@ -190,19 +187,23 @@ impl Client {
     /// # Examples
     ///
     /// ```no_run
-    /// use onionoo::{Client, QueryParameters, endpoints::Endpoint, selection::TypeValue};
+    /// use onionoo::{Client, QueryParameters, endpoints::Endpoint, selection::TypeValue, models::SummaryResponse};
     /// # async fn example() -> Result<(), Box<dyn std::error::Error>> {
     /// let client = Client::new();
     /// let params = QueryParameters::new()
     ///     .type_param(TypeValue::Relay)
     ///     .limit(10);
-    ///     
-    /// let response = client.get_endpoint(Endpoint::Summary, params).await?;
+    ///
+    /// let response: SummaryResponse = client.get_endpoint(Endpoint::Summary, params).await?;
     /// println!("Found {} relays", response.relays.len());
     /// # Ok(())
     /// # }
     /// ```
-    pub async fn get_endpoint<T>(&self, endpoint: crate::endpoints::Endpoint, params: QueryParameters) -> Result<T, ClientError>
+    pub async fn get_endpoint<T>(
+        &self,
+        endpoint: crate::endpoints::Endpoint,
+        params: QueryParameters,
+    ) -> Result<T, ClientError>
     where
         T: DeserializeOwned,
     {
@@ -229,7 +230,10 @@ impl Default for Client {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::parameters::{QueryParameters, selection::{TypeValue, BoolValue}};
+    use crate::parameters::{
+        QueryParameters,
+        selection::{BoolValue, TypeValue},
+    };
 
     #[test]
     fn test_client_default_creation() {
@@ -252,7 +256,7 @@ mod tests {
         let params = QueryParameters::new()
             .type_param(TypeValue::Relay)
             .limit(10);
-        
+
         // The actual URL construction happens in the get() method
         // We can test that invalid endpoints are rejected
         // Note: This test would need to be async in a real scenario
@@ -264,7 +268,7 @@ mod tests {
     fn test_error_display() {
         let error = ClientError::Other("test error".to_string());
         assert_eq!(error.to_string(), "Client error: test error");
-        
+
         let error = ClientError::StatusCode(404, "Not Found".to_string());
         assert_eq!(error.to_string(), "HTTP 404: Not Found");
     }

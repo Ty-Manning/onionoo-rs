@@ -2,7 +2,11 @@
 //!
 //! This module provides easy-to-use asynchronous functions for each API endpoint.
 
-use crate::{client::{Client, ClientError}, models, parameters::QueryParameters};
+use crate::{
+    client::{Client, ClientError},
+    models,
+    parameters::QueryParameters,
+};
 
 /// Base URL for the Onionoo API
 pub const BASE_URL: &str = "https://onionoo.torproject.org";
@@ -27,7 +31,7 @@ impl Endpoint {
     pub fn method(&self) -> &'static str {
         match self {
             Endpoint::Summary => "GET",
-            Endpoint::Details => "GET", 
+            Endpoint::Details => "GET",
             Endpoint::Bandwidth => "GET",
             Endpoint::Weights => "GET",
             Endpoint::Clients => "GET",
@@ -54,7 +58,7 @@ impl Endpoint {
         match self {
             Endpoint::Summary => "summary",
             Endpoint::Details => "details",
-            Endpoint::Bandwidth => "bandwidth", 
+            Endpoint::Bandwidth => "bandwidth",
             Endpoint::Weights => "weights",
             Endpoint::Clients => "clients",
             Endpoint::Uptime => "uptime",
@@ -70,15 +74,15 @@ pub const ENDPOINT_DESCRIPTIONS: &[(&str, &str)] = &[
             "Returns a summary document containing short summaries of relays with nicknames, ",
             "fingerprints, IP addresses, and running information as well as bridges with ",
             "hashed fingerprints and running information."
-        )
+        ),
     ),
     (
-        "details", 
+        "details",
         concat!(
             "Returns a details document based on network statuses published by the Tor directories, ",
             "server descriptors published by relays and bridges, and data published by Tor network ",
             "services TorDNSEL and BridgeDB. Contains comprehensive information about relays and bridges."
-        )
+        ),
     ),
     (
         "bandwidth",
@@ -86,7 +90,7 @@ pub const ENDPOINT_DESCRIPTIONS: &[(&str, &str)] = &[
             "Returns a bandwidth document containing aggregate statistics of a relay's or bridge's ",
             "consumed bandwidth for different time intervals. Only updated when a relay or bridge ",
             "publishes a new server descriptor, which may take up to 18 hours during normal operation."
-        )
+        ),
     ),
     (
         "weights",
@@ -94,21 +98,21 @@ pub const ENDPOINT_DESCRIPTIONS: &[(&str, &str)] = &[
             "Returns a weights document containing aggregate statistics of a relay's probability ",
             "to be selected by clients for building paths. Contains different time intervals and ",
             "is available for relays only."
-        )
+        ),
     ),
     (
         "clients",
         concat!(
             "Returns a clients document containing estimates of the average number of clients ",
             "connecting to a bridge every day. Only available for bridges, not relays."
-        )
+        ),
     ),
     (
         "uptime",
         concat!(
             "Returns an uptime document containing fractional uptimes of relays and bridges. ",
             "Contains different time intervals and is available for both relays and bridges."
-        )
+        ),
     ),
 ];
 
@@ -319,16 +323,12 @@ pub mod helpers {
 
     /// Returns endpoints that support only relays
     pub fn relay_only_endpoints() -> Vec<Endpoint> {
-        vec![
-            Endpoint::Weights,
-        ]
+        vec![Endpoint::Weights]
     }
 
     /// Returns endpoints that support only bridges  
     pub fn bridge_only_endpoints() -> Vec<Endpoint> {
-        vec![
-            Endpoint::Clients,
-        ]
+        vec![Endpoint::Clients]
     }
 
     /// Finds an endpoint by name

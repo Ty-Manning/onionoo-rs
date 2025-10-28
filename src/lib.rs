@@ -10,5 +10,5 @@ pub mod utils;
 
 // Re-export commonly used types for convenience
 pub use client::Client;
-pub use endpoints::{summary, details, bandwidth, weights, clients, uptime};
-pub use parameters::QueryParameters;
+pub use endpoints::{bandwidth, clients, details, summary, uptime, weights};
+pub use parameters::{QueryParameters, selection};

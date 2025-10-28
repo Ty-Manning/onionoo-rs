@@ -1,5 +1,5 @@
+use onionoo::parameters::{BoolValue, TypeValue, date, days_range};
 use onionoo::{Client, QueryParameters, endpoints};
-use onionoo::parameters::{TypeValue, BoolValue, days_range, date};
 
 #[tokio::test]
 async fn test_summary_endpoint() {
@@ -66,9 +66,7 @@ async fn test_uptime_endpoint() {
 #[tokio::test]
 async fn test_summary_with_relay_filter() {
     let client = Client::new();
-    let params = QueryParameters::new()
-        .type_param(TypeValue::Relay)
-        .limit(5);
+    let params = QueryParameters::new().type_param(TypeValue::Relay).limit(5);
     let result = endpoints::summary(&client, params).await;
     assert!(result.is_ok());
     let response = result.unwrap();
@@ -90,9 +88,7 @@ async fn test_summary_with_bridge_filter() {
 #[tokio::test]
 async fn test_details_with_running_filter() {
     let client = Client::new();
-    let params = QueryParameters::new()
-        .running(BoolValue::True)
-        .limit(10);
+    let params = QueryParameters::new().running(BoolValue::True).limit(10);
     let result = endpoints::details(&client, params).await;
     assert!(result.is_ok());
     let response = result.unwrap();
@@ -102,9 +98,7 @@ async fn test_details_with_running_filter() {
 #[tokio::test]
 async fn test_bandwidth_with_country_filter() {
     let client = Client::new();
-    let params = QueryParameters::new()
-        .country("US")
-        .limit(5);
+    let params = QueryParameters::new().country("US").limit(5);
     let result = endpoints::bandwidth(&client, params).await;
     assert!(result.is_ok());
     let response = result.unwrap();
@@ -114,9 +108,7 @@ async fn test_bandwidth_with_country_filter() {
 #[tokio::test]
 async fn test_weights_with_as_filter() {
     let client = Client::new();
-    let params = QueryParameters::new()
-        .as_param("AS13335")
-        .limit(5);
+    let params = QueryParameters::new().as_param("AS13335").limit(5);
     let result = endpoints::weights(&client, params).await;
     assert!(result.is_ok());
     let response = result.unwrap();
@@ -126,9 +118,7 @@ async fn test_weights_with_as_filter() {
 #[tokio::test]
 async fn test_uptime_with_flag_filter() {
     let client = Client::new();
-    let params = QueryParameters::new()
-        .flag("Guard")
-        .limit(5);
+    let params = QueryParameters::new().flag("Guard").limit(5);
     let result = endpoints::uptime(&client, params).await;
     assert!(result.is_ok());
     let response = result.unwrap();
@@ -138,9 +128,7 @@ async fn test_uptime_with_flag_filter() {
 #[tokio::test]
 async fn test_search_functionality() {
     let client = Client::new();
-    let params = QueryParameters::new()
-        .search("tor")
-        .limit(5);
+    let params = QueryParameters::new().search("tor").limit(5);
     let result = endpoints::summary(&client, params).await;
     assert!(result.is_ok());
     let response = result.unwrap();
@@ -162,9 +150,7 @@ async fn test_version_filter() {
 #[tokio::test]
 async fn test_os_filter() {
     let client = Client::new();
-    let params = QueryParameters::new()
-        .os("Linux")
-        .limit(5);
+    let params = QueryParameters::new().os("Linux").limit(5);
     let result = endpoints::summary(&client, params).await;
     assert!(result.is_ok());
     let response = result.unwrap();
@@ -176,9 +162,7 @@ async fn test_os_filter() {
 #[tokio::test]
 async fn test_pagination_with_offset_and_limit() {
     let client = Client::new();
-    let params = QueryParameters::new()
-        .offset(10)
-        .limit(5);
+    let params = QueryParameters::new().offset(10).limit(5);
     let result = endpoints::summary(&client, params).await;
     assert!(result.is_ok());
     let response = result.unwrap();
@@ -188,8 +172,7 @@ async fn test_pagination_with_offset_and_limit() {
 #[tokio::test]
 async fn test_pagination_only_offset() {
     let client = Client::new();
-    let params = QueryParameters::new()
-        .offset(20);
+    let params = QueryParameters::new().offset(20);
     let result = endpoints::details(&client, params).await;
     assert!(result.is_ok());
     let response = result.unwrap();
@@ -199,8 +182,7 @@ async fn test_pagination_only_offset() {
 #[tokio::test]
 async fn test_pagination_only_limit() {
     let client = Client::new();
-    let params = QueryParameters::new()
-        .limit(3);
+    let params = QueryParameters::new().limit(3);
     let result = endpoints::bandwidth(&client, params).await;
     assert!(result.is_ok());
     let response = result.unwrap();
@@ -237,7 +219,9 @@ async fn test_ordering_by_first_seen_descending() {
 async fn test_ordering_multiple_fields() {
     let client = Client::new();
     let params = QueryParameters::new()
-        .order(onionoo::parameters::helpers::order_list("consensus_weight,-first_seen"))
+        .order(onionoo::parameters::helpers::order_list(
+            "consensus_weight,-first_seen",
+        ))
         .limit(5);
     let result = endpoints::weights(&client, params).await;
     assert!(result.is_ok());
@@ -251,7 +235,9 @@ async fn test_ordering_multiple_fields() {
 async fn test_field_filtering_summary() {
     let client = Client::new();
     let params = QueryParameters::new()
-        .fields(onionoo::parameters::helpers::fields_list("nickname,fingerprint,or_addresses"))
+        .fields(onionoo::parameters::helpers::fields_list(
+            "nickname,fingerprint,or_addresses",
+        ))
         .limit(5);
     let result = endpoints::summary(&client, params).await;
     assert!(result.is_ok());
@@ -262,9 +248,7 @@ async fn test_field_filtering_summary() {
 #[tokio::test]
 async fn test_field_filtering_details() {
     let client = Client::new();
-    let params = QueryParameters::new()
-        .type_param(TypeValue::Relay)
-        .limit(5);
+    let params = QueryParameters::new().type_param(TypeValue::Relay).limit(5);
     let result = endpoints::details(&client, params).await;
     assert!(result.is_ok());
     let response = result.unwrap();
@@ -276,9 +260,7 @@ async fn test_field_filtering_details() {
 #[tokio::test]
 async fn test_weights_endpoint_relays_only() {
     let client = Client::new();
-    let params = QueryParameters::new()
-        .type_param(TypeValue::Relay)
-        .limit(5);
+    let params = QueryParameters::new().type_param(TypeValue::Relay).limit(5);
     let result = endpoints::weights(&client, params).await;
     assert!(result.is_ok());
     let response = result.unwrap();
@@ -383,9 +365,7 @@ async fn test_multiple_parameters_combined() {
 #[tokio::test]
 async fn test_complex_query_with_ordering_and_fields() {
     let client = Client::new();
-    let params = QueryParameters::new()
-        .type_param(TypeValue::Relay)
-        .limit(5);
+    let params = QueryParameters::new().type_param(TypeValue::Relay).limit(5);
     let result = endpoints::details(&client, params).await;
     assert!(result.is_ok());
     let response = result.unwrap();
@@ -445,10 +425,10 @@ async fn test_bridge_only_endpoints_function() {
 async fn test_find_endpoint_by_name() {
     let summary = onionoo::endpoints::helpers::find_by_name("summary");
     assert!(summary.is_some());
-    
+
     let details = onionoo::endpoints::helpers::find_by_name("details");
     assert!(details.is_some());
-    
+
     let invalid = onionoo::endpoints::helpers::find_by_name("invalid");
     assert!(invalid.is_none());
 }
@@ -462,12 +442,12 @@ async fn test_summary_response_structure() {
     let result = endpoints::summary(&client, params).await;
     assert!(result.is_ok());
     let response = result.unwrap();
-    
+
     // Verify basic response structure
     assert!(!response.version.is_empty());
     assert!(!response.relays_published.is_empty());
     assert!(!response.bridges_published.is_empty());
-    
+
     // Check that we have either relays or bridges
     assert!(!response.relays.is_empty() || !response.bridges.is_empty());
 }
@@ -479,10 +459,10 @@ async fn test_details_response_structure() {
     let result = endpoints::details(&client, params).await;
     assert!(result.is_ok());
     let response = result.unwrap();
-    
+
     // Verify basic response structure
     assert!(!response.version.is_empty());
-    
+
     // Check that we have relay details if relays exist
     if !response.relays.is_empty() {
         let relay = &response.relays[0];
@@ -498,10 +478,10 @@ async fn test_bandwidth_response_structure() {
     let result = endpoints::bandwidth(&client, params).await;
     assert!(result.is_ok());
     let response = result.unwrap();
-    
+
     // Verify basic response structure
     assert!(!response.version.is_empty());
-    
+
     // Check that we have bandwidth data if relays exist
     if !response.relays.is_empty() {
         let relay = &response.relays[0];
@@ -517,16 +497,16 @@ async fn test_weights_response_structure() {
     let result = endpoints::weights(&client, params).await;
     assert!(result.is_ok());
     let response = result.unwrap();
-    
+
     // Verify basic response structure
     assert!(!response.version.is_empty());
-    
+
     // Check that we have weights data if relays exist
     if !response.relays.is_empty() {
         let relay = &response.relays[0];
         assert!(!relay.fingerprint.is_empty());
     }
-    
+
     // Weights should not have bridges
     assert!(response.bridges.is_empty());
 }
@@ -538,16 +518,16 @@ async fn test_clients_response_structure() {
     let result = endpoints::clients(&client, params).await;
     assert!(result.is_ok());
     let response = result.unwrap();
-    
+
     // Verify basic response structure
     assert!(!response.version.is_empty());
-    
+
     // Check that we have clients data if bridges exist
     if !response.bridges.is_empty() {
         let bridge = &response.bridges[0];
         assert!(!bridge.fingerprint.is_empty());
     }
-    
+
     // Clients should not have relays
     assert!(response.relays.is_empty());
 }
@@ -559,10 +539,10 @@ async fn test_uptime_response_structure() {
     let result = endpoints::uptime(&client, params).await;
     assert!(result.is_ok());
     let response = result.unwrap();
-    
+
     // Verify basic response structure
     assert!(!response.version.is_empty());
-    
+
     // Check that we have uptime data if relays exist
     if !response.relays.is_empty() {
         let relay = &response.relays[0];
@@ -575,8 +555,7 @@ async fn test_uptime_response_structure() {
 #[tokio::test]
 async fn test_limit_zero() {
     let client = Client::new();
-    let params = QueryParameters::new()
-        .limit(0);
+    let params = QueryParameters::new().limit(0);
     let result = endpoints::summary(&client, params).await;
     assert!(result.is_ok());
     let response = result.unwrap();
@@ -586,9 +565,7 @@ async fn test_limit_zero() {
 #[tokio::test]
 async fn test_offset_zero() {
     let client = Client::new();
-    let params = QueryParameters::new()
-        .offset(0)
-        .limit(5);
+    let params = QueryParameters::new().offset(0).limit(5);
     let result = endpoints::details(&client, params).await;
     assert!(result.is_ok());
     let response = result.unwrap();
@@ -598,9 +575,7 @@ async fn test_offset_zero() {
 #[tokio::test]
 async fn test_large_offset() {
     let client = Client::new();
-    let params = QueryParameters::new()
-        .offset(1000)
-        .limit(5);
+    let params = QueryParameters::new().offset(1000).limit(5);
     let result = endpoints::bandwidth(&client, params).await;
     assert!(result.is_ok());
     let response = result.unwrap();
@@ -610,9 +585,7 @@ async fn test_large_offset() {
 #[tokio::test]
 async fn test_search_with_special_characters() {
     let client = Client::new();
-    let params = QueryParameters::new()
-        .search("test")
-        .limit(5);
+    let params = QueryParameters::new().search("test").limit(5);
     let result = endpoints::summary(&client, params).await;
     assert!(result.is_ok());
     let response = result.unwrap();
@@ -646,9 +619,7 @@ async fn test_version_range_filter() {
 #[tokio::test]
 async fn test_contact_filter() {
     let client = Client::new();
-    let params = QueryParameters::new()
-        .contact("tor")
-        .limit(5);
+    let params = QueryParameters::new().contact("tor").limit(5);
     let result = endpoints::details(&client, params).await;
     assert!(result.is_ok());
     let response = result.unwrap();
@@ -670,9 +641,7 @@ async fn test_family_filter() {
 #[tokio::test]
 async fn test_host_name_filter() {
     let client = Client::new();
-    let params = QueryParameters::new()
-        .host_name(".torproject.org")
-        .limit(5);
+    let params = QueryParameters::new().host_name(".torproject.org").limit(5);
     let result = endpoints::summary(&client, params).await;
     assert!(result.is_ok());
     let response = result.unwrap();
