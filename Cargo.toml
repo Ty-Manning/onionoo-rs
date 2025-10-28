@@ -2,6 +2,7 @@
 name = "onionoo"
 repository= "https://gitlab.com/spacepirate/onionoo-rs"
 license = "MIT"
+description = "Wrapper for the Onionoo Tor network status and metrics protocol, providing a convenient interface to query information about Tor relays and bridges."
 keywords = ["api-wrapper", "tor", "metrics", "observability"]
 categories = ["api-bindings"]
 version = "0.1.0"
