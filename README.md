@@ -2,7 +2,7 @@
 
 A Rust wrapper for the Onionoo Tor network status protocol, providing a convenient and type-safe interface to query information about Tor relays and bridges.
 
-## Installation
+## Basic Installation
 
 Add this to your `Cargo.toml`:
 
