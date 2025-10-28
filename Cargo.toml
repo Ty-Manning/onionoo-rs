@@ -1,5 +1,9 @@
 [package]
 name = "onionoo"
+repository= "https://gitlab.com/spacepirate/onionoo-rs"
+license = "MIT"
+keywords = ["api-wrapper", "tor", "metrics", "observability"]
+categories = ["api-bindings"]
 version = "0.1.0"
 edition = "2024"
 
